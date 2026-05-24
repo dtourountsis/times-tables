@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Steady the Tortoise — Times Tables Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbf4e0;
+    --paper-2:#f5e9c8;
+    --ink:#27331f;
+    --green:#3f7d3a;
+    --green-d:#2f5f2c;
+    --green-l:#5fa356;
+    --shell:#7a8b3c;
+    --sun:#f4b528;
+    --sun-d:#e09a14;
+    --coral:#e8654a;
+    --coral-d:#c94b32;
+    --sky:#cfe6c9;
+    --shadow:rgba(47,95,44,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 20% 12%, #fdf8e8 0%, transparent 45%),
+      radial-gradient(circle at 85% 88%, #eef3d6 0%, transparent 50%),
+      var(--paper);
+    color:var(--ink);
+    display:flex;align-items:safe center;justify-content:center;
+    min-height:100vh;padding:16px;
+    overflow-x:hidden;
+    overscroll-behavior:none;
+    -webkit-user-select:none;user-select:none;
+    -webkit-touch-callout:none;
+  }
+  /* faint dotted grid texture */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(63,125,58,.10) 1.4px, transparent 1.4px);
+    background-size:26px 26px;z-index:0;
+  }
+  .frame{
+    position:relative;z-index:1;
+    width:100%;max-width:560px;
+    background:var(--paper);
+    border:3px solid var(--green-d);
+    border-radius:34px;
+    box-shadow:0 18px 0 -4px var(--shadow), 0 26px 44px rgba(39,51,31,.28);
+    overflow:hidden;
+    min-height:660px;
+    display:flex;flex-direction:column;
+    touch-action:manipulation;
+  }
+  /* iPad & tablets: scale the whole app up for bigger, chunkier touch targets */
+  @media (min-width:680px) and (min-height:680px){
+    .frame{ zoom:1.22; }
+  }
+  .screen{padding:24px 22px 26px;display:none;flex-direction:column;flex:1;animation:pop .42s cubic-bezier(.2,.9,.3,1.3);}
+  .screen.active{display:flex;}
+  @keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px);}to{opacity:1;transform:none;}}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+  h1,h2,h3,.f{font-family:'Fredoka',sans-serif;font-weight:600;}
+
+  /* ---------- HOME ---------- */
+  .crest{text-align:center;}
+  .badge{
+    display:inline-block;background:var(--sun);color:var(--green-d);
+    font-family:'Fredoka';font-weight:600;font-size:12.5px;letter-spacing:.5px;
+    padding:5px 14px;border-radius:999px;border:2.5px solid var(--green-d);
+    text-transform:uppercase;margin-bottom:10px;
+    box-shadow:0 3px 0 var(--green-d);
+  }
+  .title{font-size:33px;line-height:1.04;color:var(--green-d);font-weight:700;}
+  .title .em{color:var(--coral-d);}
+  .subtitle{font-size:14.5px;color:var(--green);font-weight:700;margin-top:7px;}
+
+  .tort-wrap{display:flex;justify-content:center;margin:8px 0 4px;}
+  .tort{width:148px;height:120px;animation:bob 3.4s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg);}50%{transform:translateY(-9px) rotate(1.5deg);}}
+
+  .speech{
+    position:relative;background:#fff;border:2.5px solid var(--green-d);
+    border-radius:16px;padding:10px 14px;font-weight:800;font-size:13.5px;
+    color:var(--green-d);text-align:center;max-width:240px;margin:0 auto 6px;
+  }
+  .speech::after{content:"";position:absolute;left:50%;bottom:-13px;transform:translateX(-50%);
+    border:7px solid transparent;border-top-color:var(--green-d);}
+  .speech::before{content:"";position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);
+    border:6px solid transparent;border-top-color:#fff;z-index:1;}
+
+  .menu{display:flex;flex-direction:column;gap:11px;margin-top:14px;}
+  .mbtn{
+    border:3px solid var(--green-d);border-radius:20px;padding:15px 16px;
+    display:flex;align-items:center;gap:13px;cursor:pointer;
+    font-family:'Fredoka';font-weight:600;text-align:left;
+    transition:transform .12s ease, box-shadow .12s ease;
+    box-shadow:0 5px 0 var(--green-d);
+  }
+  .mbtn:active{transform:translateY(5px);box-shadow:0 0 0 var(--green-d);}
+  .mbtn .ic{font-size:27px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+    background:#fff;border:2.5px solid var(--green-d);border-radius:13px;flex:none;}
+  .mbtn .tx b{display:block;font-size:17px;line-height:1.1;}
+  .mbtn .tx span{display:block;font-family:'Nunito';font-weight:700;font-size:12px;opacity:.8;margin-top:2px;}
+  .mbtn.primary{background:var(--sun);color:var(--green-d);}
+  .mbtn.green{background:var(--green-l);color:#fff;}
+  .mbtn.green .ic,.mbtn.green .tx{color:var(--green-d);}
+  .mbtn.green .tx{color:#fff;}
+  .mbtn.coral{background:var(--coral);color:#fff;}
+  .mbtn.coral .tx{color:#fff;}
+  .mbtn.plain{background:var(--paper-2);color:var(--green-d);}
+
+  .statline{
+    margin-top:14px;display:flex;gap:9px;
+  }
+  .stat{
+    flex:1;background:#fff;border:2.5px solid var(--green-d);border-radius:15px;
+    padding:9px 6px;text-align:center;
+  }
+  .stat b{display:block;font-family:'Fredoka';font-weight:700;font-size:21px;color:var(--coral-d);}
+  .stat span{font-size:10.5px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.4px;}
+
+  /* ---------- generic header ---------- */
+  .top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .back{
+    width:42px;height:42px;flex:none;border:3px solid var(--green-d);border-radius:13px;
+    background:#fff;font-size:20px;cursor:pointer;font-family:'Fredoka';color:var(--green-d);
+    box-shadow:0 4px 0 var(--green-d);display:flex;align-items:center;justify-content:center;
+  }
+  .back:active{transform:translateY(4px);box-shadow:none;}
+  .top h2{font-size:21px;color:var(--green-d);}
+
+  .lead{font-size:14px;font-weight:700;color:var(--green);line-height:1.45;margin-bottom:14px;}
+
+  /* ---------- table chips ---------- */
+  .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:8px;}
+  .chip{
+    border:3px solid var(--green-d);border-radius:14px;background:#fff;
+    font-family:'Fredoka';font-weight:600;font-size:18px;color:var(--green-d);
+    padding:13px 0;cursor:pointer;box-shadow:0 4px 0 var(--green-d);transition:transform .1s;
+  }
+  .chip:active{transform:translateY(4px);box-shadow:none;}
+  .chip.on{background:var(--green-l);color:#fff;}
+  .quick{display:flex;gap:8px;margin:12px 0 4px;}
+  .quick button{
+    flex:1;border:2.5px solid var(--green-d);border-radius:12px;background:var(--paper-2);
+    font-family:'Fredoka';font-weight:600;font-size:13px;color:var(--green-d);padding:9px 4px;cursor:pointer;
+  }
+  .quick button:active{transform:translateY(2px);}
+
+  .go{
+    margin-top:auto;border:3px solid var(--green-d);border-radius:18px;
+    background:var(--sun);color:var(--green-d);font-family:'Fredoka';font-weight:700;
+    font-size:20px;padding:16px;cursor:pointer;box-shadow:0 6px 0 var(--green-d);width:100%;
+  }
+  .go:active{transform:translateY(6px);box-shadow:none;}
+  .go:disabled{opacity:.45;cursor:not-allowed;}
+
+  /* ---------- QUIZ ---------- */
+  .qbar{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .qbar .qno{font-family:'Fredoka';font-weight:600;font-size:14px;color:var(--green);}
+  .pgtrack{flex:1;height:13px;background:var(--paper-2);border:2.5px solid var(--green-d);border-radius:999px;overflow:hidden;}
+  .pgfill{height:100%;background:var(--green-l);width:0;transition:width .35s ease;}
+  .quitx{
+    width:34px;height:34px;border:2.5px solid var(--green-d);border-radius:10px;background:#fff;
+    font-family:'Fredoka';color:var(--coral-d);font-size:15px;cursor:pointer;flex:none;
+  }
+
+  .ringwrap{position:relative;width:96px;height:96px;margin:6px auto 2px;}
+  .ringwrap svg{transform:rotate(-90deg);}
+  .ringwrap .rtxt{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:34px;color:var(--green-d);
+  }
+
+  .qcard{
+    background:#fff;border:3px solid var(--green-d);border-radius:24px;
+    padding:26px 16px 22px;text-align:center;margin:10px 0 14px;
+    box-shadow:0 7px 0 var(--shadow);position:relative;
+  }
+  .equation{font-family:'Fredoka';font-weight:700;color:var(--green-d);font-size:46px;line-height:1;}
+  .equation .x{color:var(--coral);margin:0 6px;}
+  .equation .eq{color:var(--shell);margin:0 8px;}
+  .ansbox{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:90px;height:62px;padding:0 14px;margin-top:14px;
+    background:var(--paper);border:3px dashed var(--green);border-radius:16px;
+    font-family:'Fredoka';font-weight:700;font-size:40px;color:var(--coral-d);
+  }
+  .ansbox.empty{color:#bcae86;}
+  .ansbox.blink{animation:blink 1s steps(2) infinite;}
+  @keyframes blink{50%{border-color:var(--paper);}}
+
+  .coach{font-size:12.5px;font-weight:800;color:var(--green);text-align:center;margin-bottom:8px;min-height:17px;}
+
+  /* keypad */
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+  .key{
+    border:3px solid var(--green-d);border-radius:15px;background:#fff;
+    font-family:'Fredoka';font-weight:600;font-size:26px;color:var(--green-d);
+    padding:13px 0;cursor:pointer;box-shadow:0 5px 0 var(--green-d);
+  }
+  .key:active{transform:translateY(5px);box-shadow:none;}
+  .key.del{background:var(--paper-2);font-size:21px;}
+  .actbtn{
+    margin-top:10px;width:100%;border:3px solid var(--green-d);border-radius:16px;
+    font-family:'Fredoka';font-weight:700;font-size:20px;padding:15px;cursor:pointer;
+    box-shadow:0 6px 0 var(--green-d);
+  }
+  .actbtn:active{transform:translateY(6px);box-shadow:none;}
+  .actbtn.check{background:var(--sun);color:var(--green-d);}
+  .actbtn.lock{background:var(--green-l);color:#fff;}
+  .actbtn:disabled{opacity:.4;}
+
+  /* feedback flash (practice) */
+  .flash{
+    position:absolute;inset:0;background:var(--paper);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    border-radius:21px;padding:16px;text-align:center;
+  }
+  .flash .fi{font-size:54px;}
+  .flash .fh{font-family:'Fredoka';font-weight:700;font-size:24px;}
+  .flash.good .fh{color:var(--green-d);}
+  .flash.bad .fh{color:var(--coral-d);}
+  .flash .fc{font-family:'Fredoka';font-weight:600;font-size:28px;color:var(--green-d);background:var(--sky);
+    border:2.5px solid var(--green-d);border-radius:12px;padding:4px 14px;}
+  .flash .ft{font-size:12.5px;font-weight:800;color:var(--green);max-width:260px;}
+
+  /* check-it overlay */
+  .ovl{
+    position:absolute;inset:0;background:rgba(39,51,31,.55);
+    display:flex;align-items:flex-end;justify-content:center;z-index:30;
+    animation:rise .2s ease;
+  }
+  .sheet{
+    background:var(--paper);border:3px solid var(--green-d);border-radius:24px 24px 0 0;
+    width:100%;padding:22px 20px 22px;text-align:center;
+    box-shadow:0 -10px 30px rgba(0,0,0,.2);
+  }
+  .sheet .sh{font-family:'Fredoka';font-weight:700;font-size:18px;color:var(--green-d);margin-bottom:4px;}
+  .sheet .ssub{font-size:12.5px;font-weight:800;color:var(--coral-d);margin-bottom:12px;}
+  .sheet .seq{font-family:'Fredoka';font-weight:700;font-size:40px;color:var(--green-d);margin-bottom:16px;}
+  .sheet .seq .a{color:var(--coral-d);background:var(--sun);border-radius:10px;padding:0 10px;}
+  .sheet .srow{display:flex;gap:10px;}
+  .sheet .srow button{
+    flex:1;border:3px solid var(--green-d);border-radius:15px;font-family:'Fredoka';
+    font-weight:700;font-size:15px;padding:13px 6px;cursor:pointer;box-shadow:0 5px 0 var(--green-d);
+  }
+  .sheet .srow button:active{transform:translateY(5px);box-shadow:none;}
+  .syes{background:var(--green-l);color:#fff;}
+  .sfix{background:var(--paper-2);color:var(--coral-d);}
+
+  /* ---------- RESULTS ---------- */
+  .scoreface{text-align:center;margin-bottom:6px;}
+  .bigscore{font-family:'Fredoka';font-weight:700;font-size:62px;color:var(--green-d);line-height:1;}
+  .bigscore small{font-size:26px;color:var(--shell);}
+  .verdict{font-family:'Fredoka';font-weight:600;font-size:17px;margin:6px 0 4px;}
+  .vmsg{font-size:13px;font-weight:800;color:var(--green);line-height:1.45;}
+
+  .breakdown{display:flex;gap:9px;margin:14px 0;}
+  .bcell{flex:1;border:2.5px solid var(--green-d);border-radius:15px;padding:10px 5px;text-align:center;background:#fff;}
+  .bcell b{display:block;font-family:'Fredoka';font-weight:700;font-size:25px;line-height:1;}
+  .bcell span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;display:block;margin-top:3px;}
+  .bcell.ok b{color:var(--green-d);}
+  .bcell.rush b{color:var(--coral-d);}
+  .bcell.tricky b{color:var(--sun-d);}
+
+  .reviewhd{font-family:'Fredoka';font-weight:600;font-size:14px;color:var(--green-d);margin:4px 0 8px;}
+  .rev{max-height:188px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:3px;}
+  .ritem{border:2.5px solid var(--green-d);border-radius:14px;padding:9px 11px;background:#fff;}
+  .ritem .rtop{display:flex;align-items:center;gap:8px;}
+  .ritem .req{font-family:'Fredoka';font-weight:700;font-size:16px;color:var(--green-d);flex:1;}
+  .ritem .rtag{font-family:'Fredoka';font-weight:600;font-size:10.5px;padding:3px 9px;border-radius:999px;border:2px solid var(--green-d);}
+  .rtag.rush{background:var(--coral);color:#fff;}
+  .rtag.tricky{background:var(--sun);color:var(--green-d);}
+  .ritem .rwrong{font-size:11.5px;font-weight:800;color:var(--coral-d);margin-top:3px;}
+  .ritem .rtip{font-size:11.5px;font-weight:800;color:var(--green);margin-top:3px;}
+  .empty-good{text-align:center;font-weight:800;color:var(--green-d);font-size:13px;padding:14px;
+    background:var(--sky);border:2.5px dashed var(--green-d);border-radius:14px;}
+
+  .ractions{display:flex;gap:9px;margin-top:14px;}
+  .ractions button{
+    flex:1;border:3px solid var(--green-d);border-radius:16px;font-family:'Fredoka';font-weight:700;
+    font-size:14px;padding:13px 6px;cursor:pointer;box-shadow:0 5px 0 var(--green-d);
+  }
+  .ractions button:active{transform:translateY(5px);box-shadow:none;}
+  .ragain{background:var(--sun);color:var(--green-d);}
+  .rhome{background:var(--paper-2);color:var(--green-d);}
+
+  /* ---------- PROGRESS ---------- */
+  .chart{display:flex;align-items:flex-end;gap:6px;height:130px;background:#fff;
+    border:2.5px solid var(--green-d);border-radius:16px;padding:12px 10px 8px;margin-bottom:14px;}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
+  .bar .col{width:100%;border-radius:6px 6px 0 0;border:2px solid var(--green-d);min-height:6px;
+    background:var(--green-l);transition:height .5s ease;}
+  .bar .col.full{background:var(--sun);}
+  .bar .bl{font-family:'Fredoka';font-weight:600;font-size:10px;color:var(--green);}
+  .weakhd{font-family:'Fredoka';font-weight:600;font-size:14px;color:var(--green-d);margin-bottom:8px;}
+  .weakgrid{display:flex;flex-wrap:wrap;gap:7px;}
+  .wfact{background:var(--coral);color:#fff;font-family:'Fredoka';font-weight:600;font-size:14px;
+    border:2.5px solid var(--green-d);border-radius:11px;padding:7px 11px;}
+  .nodata{font-weight:800;color:var(--green);font-size:13px;text-align:center;padding:18px;
+    background:var(--paper-2);border-radius:14px;}
+  .clearbtn{margin-top:auto;background:none;border:2.5px solid var(--coral-d);color:var(--coral-d);
+    font-family:'Fredoka';font-weight:600;font-size:12.5px;border-radius:12px;padding:9px;cursor:pointer;}
+
+  /* gap countdown */
+  .gap{position:absolute;inset:3px;background:var(--green-d);border-radius:30px;z-index:40;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;}
+  .gap .gn{font-family:'Fredoka';font-weight:700;font-size:90px;line-height:1;animation:pop .35s;}
+  .gap .gl{font-family:'Fredoka';font-weight:600;font-size:16px;}
+
+  /* confetti */
+  .confetti{position:fixed;top:-20px;width:11px;height:14px;z-index:999;border-radius:2px;}
+  @keyframes fall{to{transform:translateY(105vh) rotate(720deg);}}
+
+  .foot{text-align:center;font-size:10.5px;font-weight:800;color:var(--shell);margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="frame" id="frame">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen active" id="s-home">
+    <div class="crest">
+      <span class="badge">Year 4 Tables Check Trainer</span>
+      <div class="title">Steady the <span class="em">Tortoise</span></div>
+      <div class="subtitle">Slow down · Think it · Get 25 / 25</div>
+    </div>
+    <div class="tort-wrap"><div id="tort-home"></div></div>
+    <div class="speech" id="home-speech">Don't race me — beat me by thinking!</div>
+
+    <div class="menu">
+      <button class="mbtn primary" data-go="practice-setup">
+        <span class="ic">🐢</span>
+        <span class="tx"><b>Steady Practice</b><span>No timer · re-read every answer before you lock it</span></span>
+      </button>
+      <button class="mbtn green" data-go="weak">
+        <span class="ic">🎯</span>
+        <span class="tx"><b>Beat My Tricky Tables</b><span>Drill the exact facts you keep missing</span></span>
+      </button>
+      <button class="mbtn coral" data-go="test-intro">
+        <span class="ic">⏱️</span>
+        <span class="tx"><b>Real Test Practice</b><span>25 questions · 6 seconds each · just like the day</span></span>
+      </button>
+      <button class="mbtn plain" data-go="progress">
+        <span class="ic">📈</span>
+        <span class="tx"><b>My Progress</b><span>See your scores and shrinking mistakes</span></span>
+      </button>
+    </div>
+
+    <div class="statline">
+      <div class="stat"><b id="h-best">–</b><span>Best Score</span></div>
+      <div class="stat"><b id="h-streak">0</b><span>25/25 Streak</span></div>
+      <div class="stat"><b id="h-tests">0</b><span>Tests Done</span></div>
+    </div>
+    <div class="foot">Tables 2 to 12 · matches the national check format</div>
+  </section>
+
+  <!-- ============ PRACTICE SETUP ============ -->
+  <section class="screen" id="s-practice-setup">
+    <div class="top">
+      <button class="back" data-go="home">←</button>
+      <h2>Steady Practice</h2>
+    </div>
+    <p class="lead">Pick the tables to practise. No clock here — the tortoise wants you to <b>think</b>, not race. You'll re-read every answer before it counts.</p>
+    <div class="chips" id="chips"></div>
+    <div class="quick">
+      <button data-pick="all">All tables</button>
+      <button data-pick="hard">Tricky 6–12</button>
+      <button data-pick="none">Clear</button>
+    </div>
+    <button class="go" id="practice-go">Start Practice 🐢</button>
+  </section>
+
+  <!-- ============ WEAK INTRO ============ -->
+  <section class="screen" id="s-weak">
+    <div class="top">
+      <button class="back" data-go="home">←</button>
+      <h2>Tricky Tables</h2>
+    </div>
+    <div class="tort-wrap"><div id="tort-weak"></div></div>
+    <p class="lead" id="weak-text"></p>
+    <div class="weakgrid" id="weak-list" style="margin-bottom:14px;"></div>
+    <button class="go" id="weak-go">Drill These 15 🎯</button>
+  </section>
+
+  <!-- ============ TEST INTRO ============ -->
+  <section class="screen" id="s-test-intro">
+    <div class="top">
+      <button class="back" data-go="home">←</button>
+      <h2>Real Test Practice</h2>
+    </div>
+    <div class="tort-wrap"><div id="tort-test"></div></div>
+    <div class="speech" style="max-width:280px;">Here's the trick: 6 seconds is LOADS of time. Read it, think it, then tap. Most rushers answer in 2.</div>
+    <p class="lead" style="margin-top:14px;">
+      ✏️ 25 questions, tables 2–12<br>
+      ⏱️ 6 seconds for each one<br>
+      🎯 Goal: 25 out of 25 — no rush mistakes
+    </p>
+    <button class="go" id="test-go">I'm Ready — Start Test ⏱️</button>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="screen" id="s-quiz">
+    <div class="qbar">
+      <span class="qno" id="q-no">1 / 25</span>
+      <div class="pgtrack"><div class="pgfill" id="q-fill"></div></div>
+      <button class="quitx" id="q-quit">✕</button>
+    </div>
+
+    <div class="ringwrap" id="ringwrap" style="display:none;">
+      <svg width="96" height="96">
+        <circle cx="48" cy="48" r="40" fill="none" stroke="#f5e9c8" stroke-width="11"/>
+        <circle id="ring" cx="48" cy="48" r="40" fill="none" stroke="#3f7d3a" stroke-width="11"
+                stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="0"/>
+      </svg>
+      <div class="rtxt" id="ring-num">6</div>
+    </div>
+
+    <div class="qcard" id="qcard">
+      <div class="equation" id="equation"></div>
+      <div class="ansbox empty" id="ansbox">?</div>
+      <div class="flash" id="flash" style="display:none;"></div>
+      <div class="ovl" id="ovl" style="display:none;">
+        <div class="sheet">
+          <div class="sh">Re-read it slowly — out loud if you can 🐢</div>
+          <div class="ssub">This is where rushers lose their marks.</div>
+          <div class="seq" id="sheet-eq"></div>
+          <div class="srow">
+            <button class="sfix" id="sheet-fix">↩ Let me fix it</button>
+            <button class="syes" id="sheet-yes">✓ Yes — lock it in</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="coach" id="coach"></div>
+
+    <div class="pad" id="pad">
+      <button class="key" data-k="1">1</button>
+      <button class="key" data-k="2">2</button>
+      <button class="key" data-k="3">3</button>
+      <button class="key" data-k="4">4</button>
+      <button class="key" data-k="5">5</button>
+      <button class="key" data-k="6">6</button>
+      <button class="key" data-k="7">7</button>
+      <button class="key" data-k="8">8</button>
+      <button class="key" data-k="9">9</button>
+      <button class="key del" data-k="del">⌫</button>
+      <button class="key" data-k="0">0</button>
+      <button class="key del" data-k="clr">C</button>
+    </div>
+    <button class="actbtn check" id="actbtn">Check it 🐢</button>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section class="screen" id="s-results">
+    <div class="scoreface">
+      <div class="bigscore" id="r-score">25<small>/25</small></div>
+      <div class="verdict" id="r-verdict"></div>
+      <div class="vmsg" id="r-vmsg"></div>
+    </div>
+    <div class="breakdown">
+      <div class="bcell ok"><b id="r-ok">0</b><span>Correct</span></div>
+      <div class="bcell rush"><b id="r-rush">0</b><span>Rush Slips</span></div>
+      <div class="bcell tricky"><b id="r-tricky">0</b><span>Tricky Facts</span></div>
+    </div>
+    <div class="reviewhd" id="r-reviewhd">Let's look at the ones that got away:</div>
+    <div class="rev" id="r-rev"></div>
+    <div class="ractions">
+      <button class="rhome" data-go="home">🏠 Home</button>
+      <button class="ragain" id="r-again">↻ Go Again</button>
+    </div>
+  </section>
+
+  <!-- ============ PROGRESS ============ -->
+  <section class="screen" id="s-progress">
+    <div class="top">
+      <button class="back" data-go="home">←</button>
+      <h2>My Progress</h2>
+    </div>
+    <div class="statline" style="margin:0 0 14px;">
+      <div class="stat"><b id="p-best">–</b><span>Best Score</span></div>
+      <div class="stat"><b id="p-streak">0</b><span>25/25 Streak</span></div>
+      <div class="stat"><b id="p-rush">0</b><span>Rush Slips (last 5)</span></div>
+    </div>
+    <div class="weakhd">Last tests — yellow bars are full marks 🌟</div>
+    <div id="p-chartwrap"></div>
+    <div class="weakhd" style="margin-top:14px;">Tables to keep working on:</div>
+    <div id="p-weak"></div>
+    <button class="clearbtn" id="p-clear">Reset all my progress</button>
+  </section>
+
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   STEADY THE TORTOISE — times tables trainer
+   Targets careless "rush" mistakes via a re-read step + timing.
+   ============================================================ */
+
+/* ---------- tortoise SVG ---------- */
+function tortoiseSVG(){
+  return `<svg class="tort" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="80" cy="118" rx="54" ry="9" fill="rgba(47,95,44,.16)"/>
+    <!-- legs -->
+    <ellipse cx="42" cy="100" rx="13" ry="11" fill="#5fa356" stroke="#2f5f2c" stroke-width="3"/>
+    <ellipse cx="118" cy="100" rx="13" ry="11" fill="#5fa356" stroke="#2f5f2c" stroke-width="3"/>
+    <!-- tail -->
+    <path d="M126 86 q14 2 16 14 q-12 -1 -18 -8 Z" fill="#5fa356" stroke="#2f5f2c" stroke-width="3"/>
+    <!-- head -->
+    <g>
+      <ellipse cx="38" cy="64" rx="22" ry="20" fill="#67ad5c" stroke="#2f5f2c" stroke-width="3.4"/>
+      <circle cx="30" cy="60" r="4.6" fill="#27331f"/>
+      <circle cx="31.6" cy="58.4" r="1.6" fill="#fff"/>
+      <path d="M22 73 q8 6 16 1" fill="none" stroke="#2f5f2c" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="40" cy="50" r="2.6" fill="#f4b528" stroke="#2f5f2c" stroke-width="1.6"/>
+    </g>
+    <!-- shell -->
+    <path d="M44 86 q36 -64 92 0 Z" fill="#7a8b3c" stroke="#2f5f2c" stroke-width="3.6"/>
+    <path d="M44 86 q36 -64 92 0" fill="none" stroke="#2f5f2c" stroke-width="3.6"/>
+    <!-- scutes -->
+    <path d="M90 30 l16 14 -8 20 -16 0 -8 -20 Z" fill="#9aad4e" stroke="#2f5f2c" stroke-width="2.6"/>
+    <path d="M66 64 l-12 -14 q14 -10 24 -4 Z" fill="#8a9c44" stroke="#2f5f2c" stroke-width="2.6"/>
+    <path d="M114 64 l12 -14 q-14 -10 -24 -4 Z" fill="#8a9c44" stroke="#2f5f2c" stroke-width="2.6"/>
+    <path d="M58 84 q8 -16 16 -16 l4 16 Z" fill="#8a9c44" stroke="#2f5f2c" stroke-width="2.4"/>
+    <path d="M122 84 q-8 -16 -16 -16 l-4 16 Z" fill="#8a9c44" stroke="#2f5f2c" stroke-width="2.4"/>
+  </svg>`;
+}
+document.getElementById('tort-home').innerHTML = tortoiseSVG();
+document.getElementById('tort-weak').innerHTML = tortoiseSVG();
+document.getElementById('tort-test').innerHTML = tortoiseSVG();
+
+/* ---------- data / persistence ---------- */
+const STORE_KEY = 'steady_tortoise_v1';
+let DATA = { history:[], facts:{}, bestScore:0, streak:0 };
+/* loadData / saveData try Claude's artifact storage first (when run inside the
+   Claude app), then fall back to normal browser storage (when the .html file
+   is opened on its own). Both paths are guarded so the app never crashes. */
+async function loadData(){
+  if(typeof window!=='undefined' && window.storage){
+    try{
+      const r = await window.storage.get(STORE_KEY, false);
+      if(r && r.value){ DATA = Object.assign(DATA, JSON.parse(r.value)); return; }
+    }catch(e){ /* fall through to browser storage */ }
+  }
+  try{
+    const v = window.localStorage.getItem(STORE_KEY);
+    if(v){ DATA = Object.assign(DATA, JSON.parse(v)); }
+  }catch(e){ /* no storage available — app still runs, just won't save */ }
+}
+async function saveData(){
+  if(typeof window!=='undefined' && window.storage){
+    try{ await window.storage.set(STORE_KEY, JSON.stringify(DATA), false); return; }
+    catch(e){ /* fall through to browser storage */ }
+  }
+  try{ window.localStorage.setItem(STORE_KEY, JSON.stringify(DATA)); }
+  catch(e){ /* ignore — app still works for this session */ }
+}
+
+/* ---------- tips for the classic tricky facts ---------- */
+const TIPS = {
+  '6x7':'6×7 = 42. Think 6×7 → "forty-two".',
+  '7x8':'7×8 = 56 — count up: 5, 6, 7, 8!',
+  '6x8':'6×8 = 48. Double 6×4 (24) → 48.',
+  '8x9':'8×9 = 72. The 9-trick: 7 then 2, adds to 9.',
+  '7x9':'7×9 = 63. 9-trick: 6 then 3, adds to 9.',
+  '6x9':'6×9 = 54. 9-trick: 5 then 4, adds to 9.',
+  '7x7':'7×7 = 49. One less than 50.',
+  '8x8':'8×8 = 64. "Eight ate, eight ate" → 64.',
+  '9x9':'9×9 = 81. 9-trick: 8 then 1.',
+  '12x12':'12×12 = 144. A "gross" — worth memorising.',
+  '7x12':'7×12 = 84. Do 7×10 (70) + 7×2 (14).',
+  '8x12':'8×12 = 96. Do 8×10 (80) + 8×2 (16).',
+  '6x12':'6×12 = 72. Do 6×10 (60) + 6×2 (12).',
+  '9x12':'9×12 = 108. Do 9×10 (90) + 9×2 (18).',
+  '11x12':'11×12 = 132. Do 11×10 (110) + 11×2 (22).',
+  '4x7':'4×7 = 28. Double 14.',
+  '4x8':'4×8 = 32. Double 16.',
+  '4x9':'4×9 = 36. Double 18.',
+  '3x9':'3×9 = 27. 9-trick: 2 then 7.',
+  '4x6':'4×6 = 24. Double 12.',
+  '6x6':'6×6 = 36. A square number.',
+  '8x6':'6×8 = 48.','3x7':'3×7 = 21.','3x8':'3×8 = 24.','3x6':'3×6 = 18.',
+  '4x12':'4×12 = 48. Do 4×10 + 4×2.','3x12':'3×12 = 36.'
+};
+const HARD_FACTS = [[6,7],[7,8],[6,8],[8,9],[7,9],[6,9],[7,7],[8,8],[9,9],
+                    [12,12],[7,12],[8,12],[6,12],[9,12],[11,12],[4,7],[4,8],[3,9]];
+const COACH_LINES = [
+  'Read it twice 🐢','No rushing — you've got time','Picture the answer first',
+  'Slow is smooth, smooth is smart','Whisper it before you tap','The tortoise is in no hurry'
+];
+
+function factKey(a,b){ const lo=Math.min(a,b),hi=Math.max(a,b); return lo+'x'+hi; }
+function getTip(a,b){ return TIPS[factKey(a,b)] || ''; }
+
+/* ---------- question generation ---------- */
+function weightedTable(){
+  const w={2:1,3:2,4:2,5:1,6:3,7:3,8:3,9:3,10:1,11:2,12:3};
+  const pool=[];
+  for(const k in w){ for(let i=0;i<w[k];i++) pool.push(+k); }
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function rint(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  return arr;
+}
+function makeQ(a,b){
+  if(Math.random()<0.5){ const t=a;a=b;b=t; }
+  return { a:a, b:b, product:a*b };
+}
+function genTest(){
+  const qs=[]; const seen=new Set();
+  let guard=0;
+  while(qs.length<25 && guard<400){
+    guard++;
+    const t=weightedTable(); const o=rint(2,12);
+    const k=factKey(t,o);
+    if(seen.has(k) && qs.length<22) continue;
+    seen.add(k); qs.push(makeQ(t,o));
+  }
+  while(qs.length<25){ qs.push(makeQ(weightedTable(),rint(2,12))); }
+  return qs;
+}
+function genPractice(tables,count){
+  const facts=[];
+  tables.forEach(t=>{ for(let o=2;o<=12;o++) facts.push([t,o]); });
+  shuffle(facts);
+  const qs=[];
+  for(let i=0;i<count;i++){ const f=facts[i%facts.length]; qs.push(makeQ(f[0],f[1])); }
+  return shuffle(qs);
+}
+function genWeak(count){
+  const ranked=Object.keys(DATA.facts)
+    .map(k=>({k:k,s:DATA.facts[k]}))
+    .filter(x=>x.s.seen>=1)
+    .map(x=>({k:x.k, rate:x.s.wrong/x.s.seen, seen:x.s.seen}))
+    .filter(x=>x.rate>0)
+    .sort((a,b)=> b.rate-a.rate || b.seen-a.seen);
+  let pairs = ranked.map(x=>x.k.split('x').map(Number));
+  for(const hf of HARD_FACTS){
+    if(pairs.length>=8) break;
+    const key=factKey(hf[0],hf[1]);
+    if(!pairs.some(p=>factKey(p[0],p[1])===key)) pairs.push(hf);
+  }
+  if(pairs.length===0) pairs=HARD_FACTS.slice();
+  const qs=[];
+  for(let i=0;i<count;i++){ const p=pairs[i%pairs.length]; qs.push(makeQ(p[0],p[1])); }
+  return shuffle(qs);
+}
+
+/* ---------- quiz state ---------- */
+const Q = {
+  mode:'practice',     // 'practice' | 'test'
+  list:[],
+  idx:0,
+  input:'',
+  answers:[],          // {a,b,product,given,correct,timeMs,rushed}
+  qStart:0,
+  locked:false,
+  timerRAF:null,
+  timerDone:false,
+  gapTO:null
+};
+const RUSH_MS = { practice:4000, test:3000 };
+const PER_Q_MS = 6000;
+const RING_C = 2*Math.PI*40; // 251.3
+
+/* ---------- screen routing ---------- */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.getElementById('frame').scrollTop=0;
+}
+
+/* ---------- HOME stats ---------- */
+function refreshHomeStats(){
+  document.getElementById('h-best').textContent = DATA.bestScore? DATA.bestScore+'/25' : '–';
+  document.getElementById('h-streak').textContent = DATA.streak||0;
+  document.getElementById('h-tests').textContent = DATA.history.length;
+}
+
+/* ---------- table chips ---------- */
+const chipsEl=document.getElementById('chips');
+let selected=new Set([6,7,8,9,12]);
+function buildChips(){
+  chipsEl.innerHTML='';
+  for(let t=2;t<=12;t++){
+    const b=document.createElement('button');
+    b.className='chip'+(selected.has(t)?' on':'');
+    b.textContent=t;
+    b.onclick=()=>{
+      selected.has(t)?selected.delete(t):selected.add(t);
+      b.classList.toggle('on');
+      document.getElementById('practice-go').disabled = selected.size===0;
+    };
+    chipsEl.appendChild(b);
+  }
+}
+document.querySelectorAll('[data-pick]').forEach(btn=>{
+  btn.onclick=()=>{
+    const p=btn.dataset.pick;
+    if(p==='all') selected=new Set([2,3,4,5,6,7,8,9,10,11,12]);
+    if(p==='hard') selected=new Set([6,7,8,9,11,12]);
+    if(p==='none') selected=new Set();
+    buildChips();
+    document.getElementById('practice-go').disabled = selected.size===0;
+  };
+});
+
+/* ---------- WEAK screen ---------- */
+function buildWeakScreen(){
+  const ranked=Object.keys(DATA.facts)
+    .map(k=>({k:k,s:DATA.facts[k]}))
+    .filter(x=>x.s.seen>=1 && x.s.wrong>0)
+    .sort((a,b)=> (b.s.wrong/b.s.seen)-(a.s.wrong/a.s.seen));
+  const txt=document.getElementById('weak-text');
+  const list=document.getElementById('weak-list');
+  list.innerHTML='';
+  if(ranked.length===0){
+    txt.innerHTML="No tricky facts logged yet! For now the tortoise will drill the facts that trip up <b>most</b> children — the big 6, 7, 8, 9 and 12 multiplications.";
+    HARD_FACTS.slice(0,8).forEach(p=>{
+      const d=document.createElement('div'); d.className='wfact'; d.textContent=p[0]+'×'+p[1];
+      list.appendChild(d);
+    });
+  }else{
+    txt.innerHTML="These are the facts <b>you</b> have slipped on. Let's turn them into easy points — re-read every one.";
+    ranked.slice(0,8).forEach(x=>{
+      const p=x.k.split('x');
+      const d=document.createElement('div'); d.className='wfact'; d.textContent=p[0]+'×'+p[1];
+      list.appendChild(d);
+    });
+  }
+}
+
+/* ---------- start a quiz ---------- */
+function startQuiz(mode,list){
+  Q.mode=mode; Q.list=list; Q.idx=0; Q.answers=[]; Q.input='';
+  show('quiz');
+  document.getElementById('ringwrap').style.display = mode==='test'?'block':'none';
+  document.getElementById('actbtn').className = 'actbtn '+(mode==='test'?'lock':'check');
+  document.getElementById('actbtn').textContent = mode==='test'?'Lock it in ✓':'Check it 🐢';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  clearTimers();
+  Q.input=''; Q.locked=false; Q.timerDone=false;
+  const q=Q.list[Q.idx];
+  const total=Q.list.length;
+  document.getElementById('q-no').textContent=(Q.idx+1)+' / '+total;
+  document.getElementById('q-fill').style.width=(Q.idx/total*100)+'%';
+  document.getElementById('equation').innerHTML=
+    q.a+'<span class="x">×</span>'+q.b+'<span class="eq">=</span>';
+  document.getElementById('flash').style.display='none';
+  document.getElementById('ovl').style.display='none';
+  updateAns();
+  const actb=document.getElementById('actbtn');
+  actb.disabled=true;
+  document.getElementById('pad').style.pointerEvents='auto';
+
+  const coach=document.getElementById('coach');
+  if(Q.mode==='practice'){
+    coach.textContent=COACH_LINES[Q.idx % COACH_LINES.length];
+  }else{
+    coach.textContent='Read it… think it… then tap.';
+  }
+
+  Q.qStart=performance.now();
+  if(Q.mode==='test') startRing();
+}
+
+function updateAns(){
+  const box=document.getElementById('ansbox');
+  if(Q.input===''){ box.textContent='?'; box.classList.add('empty'); }
+  else { box.textContent=Q.input; box.classList.remove('empty'); }
+  document.getElementById('actbtn').disabled = (Q.input==='' || Q.locked);
+}
+
+/* ---------- timer ring (test mode) ---------- */
+function startRing(){
+  const ring=document.getElementById('ring');
+  const numEl=document.getElementById('ring-num');
+  const start=performance.now();
+  function frame(now){
+    const el=now-start;
+    const frac=Math.min(el/PER_Q_MS,1);
+    ring.style.strokeDashoffset = (RING_C*frac).toFixed(1);
+    const left=Math.max(0,Math.ceil((PER_Q_MS-el)/1000));
+    numEl.textContent=left;
+    if(frac>=0.66) ring.setAttribute('stroke','#e8654a');
+    else if(frac>=0.34) ring.setAttribute('stroke','#f4b528');
+    else ring.setAttribute('stroke','#3f7d3a');
+    if(frac<1 && !Q.locked){ Q.timerRAF=requestAnimationFrame(frame); }
+    else if(!Q.locked){ Q.timerDone=true; lockAnswer(true); }
+  }
+  ring.setAttribute('stroke','#3f7d3a');
+  ring.style.strokeDashoffset='0';
+  Q.timerRAF=requestAnimationFrame(frame);
+}
+function clearTimers(){
+  if(Q.timerRAF) cancelAnimationFrame(Q.timerRAF);
+  if(Q.gapTO) clearTimeout(Q.gapTO);
+  Q.timerRAF=null; Q.gapTO=null;
+}
+
+/* ---------- keypad ---------- */
+document.getElementById('pad').addEventListener('click',e=>{
+  const b=e.target.closest('.key'); if(!b||Q.locked) return;
+  const k=b.dataset.k;
+  if(k==='del') Q.input=Q.input.slice(0,-1);
+  else if(k==='clr') Q.input='';
+  else if(Q.input.length<3) Q.input+=k;
+  updateAns();
+});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('s-quiz').classList.contains('active')) return;
+  if(Q.locked) return;
+  if(/^[0-9]$/.test(e.key)){ if(Q.input.length<3){Q.input+=e.key;updateAns();} }
+  else if(e.key==='Backspace'){ Q.input=Q.input.slice(0,-1); updateAns(); }
+  else if(e.key==='Enter'){ document.getElementById('actbtn').click(); }
+});
+
+/* ---------- action button ---------- */
+document.getElementById('actbtn').onclick=()=>{
+  if(Q.input===''||Q.locked) return;
+  if(Q.mode==='practice'){ openCheckSheet(); }
+  else { lockAnswer(false); }
+};
+
+/* ---------- check-it sheet (practice) ---------- */
+function openCheckSheet(){
+  const q=Q.list[Q.idx];
+  document.getElementById('sheet-eq').innerHTML=
+    q.a+' × '+q.b+' = <span class="a">'+Q.input+'</span>';
+  document.getElementById('ovl').style.display='flex';
+}
+document.getElementById('sheet-fix').onclick=()=>{
+  document.getElementById('ovl').style.display='none';
+};
+document.getElementById('sheet-yes').onclick=()=>{
+  document.getElementById('ovl').style.display='none';
+  lockAnswer(false);
+};
+
+/* ---------- lock + grade ---------- */
+function lockAnswer(timedOut){
+  if(Q.locked) return;
+  Q.locked=true;
+  clearTimers();
+  document.getElementById('actbtn').disabled=true;
+  document.getElementById('pad').style.pointerEvents='none';
+
+  const q=Q.list[Q.idx];
+  const timeMs=performance.now()-Q.qStart;
+  const given = Q.input===''? null : parseInt(Q.input,10);
+  const correct = given===q.product;
+  const rushed = !correct && given!==null && timeMs < RUSH_MS[Q.mode];
+
+  Q.answers.push({a:q.a,b:q.b,product:q.product,given:given,correct:correct,
+                  timeMs:timeMs,rushed:rushed,timedOut:!!timedOut});
+
+  // log fact stats
+  const fk=factKey(q.a,q.b);
+  if(!DATA.facts[fk]) DATA.facts[fk]={seen:0,wrong:0};
+  DATA.facts[fk].seen++;
+  if(!correct) DATA.facts[fk].wrong++;
+
+  if(Q.mode==='practice'){ showFlash(correct,rushed,q,given); }
+  else { advance(); }
+}
+
+function showFlash(correct,rushed,q,given){
+  const f=document.getElementById('flash');
+  f.style.display='flex';
+  if(correct){
+    f.className='flash good';
+    f.innerHTML='<div class="fi">🌟</div><div class="fh">Spot on!</div>'+
+      '<div class="fc">'+q.a+' × '+q.b+' = '+q.product+'</div>';
+  }else{
+    f.className='flash bad';
+    const tip=getTip(q.a,q.b);
+    const head = rushed? 'Rushed it!' : 'So close';
+    const note = rushed
+      ? 'You answered super fast — that\'s the rush trap. You probably knew this one.'
+      : 'A tricky one. Let\'s remember it:';
+    f.innerHTML='<div class="fi">'+(rushed?'🐇':'💭')+'</div>'+
+      '<div class="fh">'+head+'</div>'+
+      '<div class="fc">'+q.a+' × '+q.b+' = '+q.product+'</div>'+
+      '<div class="ft">'+(tip||note)+'</div>';
+  }
+  Q.gapTO=setTimeout(advance, correct?1000:2400);
+}
+
+/* ---------- advance / finish ---------- */
+function advance(){
+  Q.idx++;
+  if(Q.idx>=Q.list.length){ finishQuiz(); return; }
+  if(Q.mode==='test'){ showGap(); }
+  else { renderQuestion(); }
+}
+function showGap(){
+  const qc=document.getElementById('qcard');
+  const gap=document.createElement('div');
+  gap.className='gap';
+  gap.innerHTML='<div class="gl">Question '+(Q.idx+1)+' of '+Q.list.length+'</div><div class="gn">3</div>';
+  qc.appendChild(gap);
+  let n=3;
+  const numEl=gap.querySelector('.gn');
+  const tick=setInterval(()=>{
+    n--;
+    if(n<=0){ clearInterval(tick); gap.remove(); renderQuestion(); }
+    else { numEl.textContent=n; numEl.style.animation='none'; void numEl.offsetWidth; numEl.style.animation='pop .35s'; }
+  },650);
+}
+
+/* ---------- finish + results ---------- */
+function finishQuiz(){
+  document.getElementById('q-fill').style.width='100%';
+  const total=Q.answers.length;
+  const ok=Q.answers.filter(a=>a.correct).length;
+  const rush=Q.answers.filter(a=>a.rushed).length;
+  const tricky=Q.answers.filter(a=>!a.correct && !a.rushed).length;
+  const score=ok;
+
+  // persist (mock test counts toward streak/best)
+  const rec={ mode:Q.mode, score:score, total:total, rush:rush, tricky:tricky, when:Date.now() };
+  DATA.history.push(rec);
+  if(DATA.history.length>40) DATA.history=DATA.history.slice(-40);
+  if(Q.mode==='test'){
+    if(score>DATA.bestScore) DATA.bestScore=score;
+    DATA.streak = (score===25)? (DATA.streak||0)+1 : 0;
+  }
+  saveData();
+  refreshHomeStats();
+
+  renderResults(score,total,ok,rush,tricky);
+  show('results');
+  if(Q.mode==='test' && score===25) burstConfetti();
+}
+
+function renderResults(score,total,ok,rush,tricky){
+  document.getElementById('r-score').innerHTML=score+'<small>/'+total+'</small>';
+  document.getElementById('r-ok').textContent=ok;
+  document.getElementById('r-rush').textContent=rush;
+  document.getElementById('r-tricky').textContent=tricky;
+
+  const vEl=document.getElementById('r-verdict');
+  const mEl=document.getElementById('r-vmsg');
+  const mistakes=total-ok;
+
+  if(mistakes===0){
+    vEl.textContent='🏆 PERFECT — 25 out of 25 feeling!';
+    vEl.style.color='#2f5f2c';
+    mEl.textContent='Every answer correct AND no rush slips. That is exactly the test-day target. Do it three days in a row and it\'s a habit.';
+  }else if(rush===mistakes){
+    vEl.textContent='🐇 Rush slips only — you KNOW this stuff';
+    vEl.style.color='#c94b32';
+    mEl.innerHTML='All '+mistakes+' mistake'+(mistakes>1?'s were':' was')+' from answering too fast. Not a single tricky fact. The maths is there — the <b>only</b> fix is to re-read before you tap.';
+  }else if(rush>0){
+    vEl.textContent='Good work — '+rush+' of those were just rushing';
+    vEl.style.color='#e09a14';
+    mEl.innerHTML=rush+' rush slip'+(rush>1?'s':'')+' you can win back instantly by slowing down, plus '+tricky+' fact'+(tricky>1?'s':'')+' worth practising in <b>Tricky Tables</b>.';
+  }else{
+    vEl.textContent='No rushing — these were genuinely tricky';
+    vEl.style.color='#e09a14';
+    mEl.innerHTML='You took your time, which is great. These '+tricky+' fact'+(tricky>1?'s':'')+' just need drilling — hit <b>Beat My Tricky Tables</b>.';
+  }
+
+  const rev=document.getElementById('r-rev');
+  const hd=document.getElementById('r-reviewhd');
+  rev.innerHTML='';
+  const wrongs=Q.answers.filter(a=>!a.correct);
+  if(wrongs.length===0){
+    hd.style.display='none';
+    rev.innerHTML='<div class="empty-good">🎉 Nothing to review — clean sweep!</div>';
+  }else{
+    hd.style.display='block';
+    wrongs.forEach(a=>{
+      const tip=getTip(a.a,a.b);
+      const tag=a.rushed?'rush':'tricky';
+      const tagtxt=a.rushed?'🐇 Rushed':'💭 Tricky';
+      const gave=a.given===null?'(ran out of time)':('you put '+a.given);
+      const div=document.createElement('div');
+      div.className='ritem';
+      div.innerHTML=
+        '<div class="rtop"><span class="req">'+a.a+' × '+a.b+' = '+a.product+'</span>'+
+        '<span class="rtag '+tag+'">'+tagtxt+'</span></div>'+
+        '<div class="rwrong">'+gave+(a.given!==null?(' · answered in '+(a.timeMs/1000).toFixed(1)+'s'):'')+'</div>'+
+        (tip?('<div class="rtip">💡 '+tip+'</div>'):'');
+      rev.appendChild(div);
+    });
+  }
+}
+document.getElementById('r-again').onclick=()=>{
+  if(Q.mode==='test') startQuiz('test',genTest());
+  else startQuiz(Q.mode, Q.list.map(q=>makeQ(q.a,q.b)));
+};
+
+/* ---------- confetti ---------- */
+function burstConfetti(){
+  const cols=['#f4b528','#3f7d3a','#e8654a','#5fa356','#9aad4e'];
+  for(let i=0;i<70;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=cols[i%cols.length];
+    c.style.animation='fall '+(2.4+Math.random()*1.8)+'s linear '+(Math.random()*0.5)+'s forwards';
+    c.style.opacity=0.9;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5200);
+  }
+}
+
+/* ---------- PROGRESS ---------- */
+function renderProgress(){
+  document.getElementById('p-best').textContent = DATA.bestScore? DATA.bestScore+'/25':'–';
+  document.getElementById('p-streak').textContent = DATA.streak||0;
+  const last5=DATA.history.slice(-5);
+  const rushSum=last5.reduce((s,h)=>s+(h.rush||0),0);
+  document.getElementById('p-rush').textContent=rushSum;
+
+  // chart
+  const wrap=document.getElementById('p-chartwrap');
+  const tests=DATA.history.slice(-10);
+  if(tests.length===0){
+    wrap.innerHTML='<div class="nodata">No quizzes finished yet. Do a Steady Practice or a Real Test and your scores will appear here. 🐢</div>';
+  }else{
+    let bars='';
+    tests.forEach(h=>{
+      const pct=Math.round(h.score/h.total*100);
+      const full=(h.mode==='test'&&h.score===25);
+      bars+='<div class="bar"><div class="col'+(full?' full':'')+'" style="height:'+Math.max(pct,6)+'%"></div>'+
+            '<div class="bl">'+h.score+'</div></div>';
+    });
+    wrap.innerHTML='<div class="chart">'+bars+'</div>';
+  }
+
+  // weak facts
+  const pw=document.getElementById('p-weak');
+  const ranked=Object.keys(DATA.facts)
+    .map(k=>({k:k,s:DATA.facts[k]}))
+    .filter(x=>x.s.seen>=1 && x.s.wrong>0)
+    .sort((a,b)=> (b.s.wrong/b.s.seen)-(a.s.wrong/a.s.seen))
+    .slice(0,8);
+  if(ranked.length===0){
+    pw.innerHTML='<div class="nodata">No problem facts logged — keep it up! 🌟</div>';
+  }else{
+    let g='<div class="weakgrid">';
+    ranked.forEach(x=>{ const p=x.k.split('x'); g+='<div class="wfact">'+p[0]+'×'+p[1]+'</div>'; });
+    pw.innerHTML=g+'</div>';
+  }
+}
+document.getElementById('p-clear').onclick=()=>{
+  if(confirm('Reset all progress, scores and tricky-table history?')){
+    DATA={ history:[], facts:{}, bestScore:0, streak:0 };
+    saveData(); refreshHomeStats(); renderProgress();
+  }
+};
+
+/* ---------- quit quiz ---------- */
+document.getElementById('q-quit').onclick=()=>{
+  if(confirm('Stop this quiz and go home?')){ clearTimers(); show('home'); }
+};
+
+/* ---------- navigation wiring ---------- */
+document.querySelectorAll('[data-go]').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const dest=el.dataset.go;
+    if(dest==='practice-setup'){ buildChips(); document.getElementById('practice-go').disabled=selected.size===0; show('practice-setup'); }
+    else if(dest==='weak'){ buildWeakScreen(); show('weak'); }
+    else if(dest==='test-intro'){ show('test-intro'); }
+    else if(dest==='progress'){ renderProgress(); show('progress'); }
+    else if(dest==='home'){ refreshHomeStats(); show('home'); }
+    else show(dest);
+  });
+});
+document.getElementById('practice-go').onclick=()=>{
+  if(selected.size===0) return;
+  startQuiz('practice', genPractice([...selected],15));
+};
+document.getElementById('weak-go').onclick=()=>{
+  startQuiz('practice', genWeak(15));
+};
+document.getElementById('test-go').onclick=()=>{
+  startQuiz('test', genTest());
+};
+
+/* ---------- boot ---------- */
+(async function(){
+  await loadData();
+  refreshHomeStats();
+  buildChips();
+})();
+</script>
+</body>
+</html>
