@@ -65,9 +65,9 @@
   .screen.active{display:flex;}
   @keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px);}to{opacity:1;transform:none;}}
   @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-
+ 
   h1,h2,h3,.f{font-family:'Fredoka',sans-serif;font-weight:600;}
-
+ 
   /* ---------- HOME ---------- */
   .crest{text-align:center;}
   .badge{
@@ -80,11 +80,11 @@
   .title{font-size:33px;line-height:1.04;color:var(--green-d);font-weight:700;}
   .title .em{color:var(--coral-d);}
   .subtitle{font-size:14.5px;color:var(--green);font-weight:700;margin-top:7px;}
-
+ 
   .tort-wrap{display:flex;justify-content:center;margin:8px 0 4px;}
   .tort{width:148px;height:120px;animation:bob 3.4s ease-in-out infinite;}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg);}50%{transform:translateY(-9px) rotate(1.5deg);}}
-
+ 
   .speech{
     position:relative;background:#fff;border:2.5px solid var(--green-d);
     border-radius:16px;padding:10px 14px;font-weight:800;font-size:13.5px;
@@ -94,7 +94,7 @@
     border:7px solid transparent;border-top-color:var(--green-d);}
   .speech::before{content:"";position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);
     border:6px solid transparent;border-top-color:#fff;z-index:1;}
-
+ 
   .menu{display:flex;flex-direction:column;gap:11px;margin-top:14px;}
   .mbtn{
     border:3px solid var(--green-d);border-radius:20px;padding:15px 16px;
@@ -115,7 +115,7 @@
   .mbtn.coral{background:var(--coral);color:#fff;}
   .mbtn.coral .tx{color:#fff;}
   .mbtn.plain{background:var(--paper-2);color:var(--green-d);}
-
+ 
   .statline{
     margin-top:14px;display:flex;gap:9px;
   }
@@ -125,7 +125,7 @@
   }
   .stat b{display:block;font-family:'Fredoka';font-weight:700;font-size:21px;color:var(--coral-d);}
   .stat span{font-size:10.5px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.4px;}
-
+ 
   /* ---------- generic header ---------- */
   .top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
   .back{
@@ -135,9 +135,9 @@
   }
   .back:active{transform:translateY(4px);box-shadow:none;}
   .top h2{font-size:21px;color:var(--green-d);}
-
+ 
   .lead{font-size:14px;font-weight:700;color:var(--green);line-height:1.45;margin-bottom:14px;}
-
+ 
   /* ---------- table chips ---------- */
   .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:8px;}
   .chip{
@@ -153,7 +153,7 @@
     font-family:'Fredoka';font-weight:600;font-size:13px;color:var(--green-d);padding:9px 4px;cursor:pointer;
   }
   .quick button:active{transform:translateY(2px);}
-
+ 
   .go{
     margin-top:auto;border:3px solid var(--green-d);border-radius:18px;
     background:var(--sun);color:var(--green-d);font-family:'Fredoka';font-weight:700;
@@ -161,7 +161,7 @@
   }
   .go:active{transform:translateY(6px);box-shadow:none;}
   .go:disabled{opacity:.45;cursor:not-allowed;}
-
+ 
   /* ---------- QUIZ ---------- */
   .qbar{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
   .qbar .qno{font-family:'Fredoka';font-weight:600;font-size:14px;color:var(--green);}
@@ -171,14 +171,14 @@
     width:34px;height:34px;border:2.5px solid var(--green-d);border-radius:10px;background:#fff;
     font-family:'Fredoka';color:var(--coral-d);font-size:15px;cursor:pointer;flex:none;
   }
-
+ 
   .ringwrap{position:relative;width:96px;height:96px;margin:6px auto 2px;}
   .ringwrap svg{transform:rotate(-90deg);}
   .ringwrap .rtxt{
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     font-family:'Fredoka';font-weight:700;font-size:34px;color:var(--green-d);
   }
-
+ 
   .qcard{
     background:#fff;border:3px solid var(--green-d);border-radius:24px;
     padding:26px 16px 22px;text-align:center;margin:10px 0 14px;
@@ -196,9 +196,9 @@
   .ansbox.empty{color:#bcae86;}
   .ansbox.blink{animation:blink 1s steps(2) infinite;}
   @keyframes blink{50%{border-color:var(--paper);}}
-
+ 
   .coach{font-size:12.5px;font-weight:800;color:var(--green);text-align:center;margin-bottom:8px;min-height:17px;}
-
+ 
   /* keypad */
   .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
   .key{
@@ -217,7 +217,7 @@
   .actbtn.check{background:var(--sun);color:var(--green-d);}
   .actbtn.lock{background:var(--green-l);color:#fff;}
   .actbtn:disabled{opacity:.4;}
-
+ 
   /* feedback flash (practice) */
   .flash{
     position:absolute;inset:0;background:var(--paper);
@@ -231,7 +231,7 @@
   .flash .fc{font-family:'Fredoka';font-weight:600;font-size:28px;color:var(--green-d);background:var(--sky);
     border:2.5px solid var(--green-d);border-radius:12px;padding:4px 14px;}
   .flash .ft{font-size:12.5px;font-weight:800;color:var(--green);max-width:260px;}
-
+ 
   /* check-it overlay */
   .ovl{
     position:absolute;inset:0;background:rgba(39,51,31,.55);
@@ -255,14 +255,14 @@
   .sheet .srow button:active{transform:translateY(5px);box-shadow:none;}
   .syes{background:var(--green-l);color:#fff;}
   .sfix{background:var(--paper-2);color:var(--coral-d);}
-
+ 
   /* ---------- RESULTS ---------- */
   .scoreface{text-align:center;margin-bottom:6px;}
   .bigscore{font-family:'Fredoka';font-weight:700;font-size:62px;color:var(--green-d);line-height:1;}
   .bigscore small{font-size:26px;color:var(--shell);}
   .verdict{font-family:'Fredoka';font-weight:600;font-size:17px;margin:6px 0 4px;}
   .vmsg{font-size:13px;font-weight:800;color:var(--green);line-height:1.45;}
-
+ 
   .breakdown{display:flex;gap:9px;margin:14px 0;}
   .bcell{flex:1;border:2.5px solid var(--green-d);border-radius:15px;padding:10px 5px;text-align:center;background:#fff;}
   .bcell b{display:block;font-family:'Fredoka';font-weight:700;font-size:25px;line-height:1;}
@@ -270,7 +270,7 @@
   .bcell.ok b{color:var(--green-d);}
   .bcell.rush b{color:var(--coral-d);}
   .bcell.tricky b{color:var(--sun-d);}
-
+ 
   .reviewhd{font-family:'Fredoka';font-weight:600;font-size:14px;color:var(--green-d);margin:4px 0 8px;}
   .rev{max-height:188px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:3px;}
   .ritem{border:2.5px solid var(--green-d);border-radius:14px;padding:9px 11px;background:#fff;}
@@ -283,7 +283,7 @@
   .ritem .rtip{font-size:11.5px;font-weight:800;color:var(--green);margin-top:3px;}
   .empty-good{text-align:center;font-weight:800;color:var(--green-d);font-size:13px;padding:14px;
     background:var(--sky);border:2.5px dashed var(--green-d);border-radius:14px;}
-
+ 
   .ractions{display:flex;gap:9px;margin-top:14px;}
   .ractions button{
     flex:1;border:3px solid var(--green-d);border-radius:16px;font-family:'Fredoka';font-weight:700;
@@ -292,7 +292,7 @@
   .ractions button:active{transform:translateY(5px);box-shadow:none;}
   .ragain{background:var(--sun);color:var(--green-d);}
   .rhome{background:var(--paper-2);color:var(--green-d);}
-
+ 
   /* ---------- PROGRESS ---------- */
   .chart{display:flex;align-items:flex-end;gap:6px;height:130px;background:#fff;
     border:2.5px solid var(--green-d);border-radius:16px;padding:12px 10px 8px;margin-bottom:14px;}
@@ -309,23 +309,23 @@
     background:var(--paper-2);border-radius:14px;}
   .clearbtn{margin-top:auto;background:none;border:2.5px solid var(--coral-d);color:var(--coral-d);
     font-family:'Fredoka';font-weight:600;font-size:12.5px;border-radius:12px;padding:9px;cursor:pointer;}
-
+ 
   /* gap countdown */
   .gap{position:absolute;inset:3px;background:var(--green-d);border-radius:30px;z-index:40;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;}
   .gap .gn{font-family:'Fredoka';font-weight:700;font-size:90px;line-height:1;animation:pop .35s;}
   .gap .gl{font-family:'Fredoka';font-weight:600;font-size:16px;}
-
+ 
   /* confetti */
   .confetti{position:fixed;top:-20px;width:11px;height:14px;z-index:999;border-radius:2px;}
   @keyframes fall{to{transform:translateY(105vh) rotate(720deg);}}
-
+ 
   .foot{text-align:center;font-size:10.5px;font-weight:800;color:var(--shell);margin-top:12px;}
 </style>
 </head>
 <body>
 <div class="frame" id="frame">
-
+ 
   <!-- ============ HOME ============ -->
   <section class="screen active" id="s-home">
     <div class="crest">
@@ -335,7 +335,7 @@
     </div>
     <div class="tort-wrap"><div id="tort-home"></div></div>
     <div class="speech" id="home-speech">Don't race me — beat me by thinking!</div>
-
+ 
     <div class="menu">
       <button class="mbtn primary" data-go="practice-setup">
         <span class="ic">🐢</span>
@@ -354,7 +354,7 @@
         <span class="tx"><b>My Progress</b><span>See your scores and shrinking mistakes</span></span>
       </button>
     </div>
-
+ 
     <div class="statline">
       <div class="stat"><b id="h-best">–</b><span>Best Score</span></div>
       <div class="stat"><b id="h-streak">0</b><span>25/25 Streak</span></div>
@@ -362,7 +362,7 @@
     </div>
     <div class="foot">Tables 2 to 12 · matches the national check format</div>
   </section>
-
+ 
   <!-- ============ PRACTICE SETUP ============ -->
   <section class="screen" id="s-practice-setup">
     <div class="top">
@@ -378,7 +378,7 @@
     </div>
     <button class="go" id="practice-go">Start Practice 🐢</button>
   </section>
-
+ 
   <!-- ============ WEAK INTRO ============ -->
   <section class="screen" id="s-weak">
     <div class="top">
@@ -390,7 +390,7 @@
     <div class="weakgrid" id="weak-list" style="margin-bottom:14px;"></div>
     <button class="go" id="weak-go">Drill These 15 🎯</button>
   </section>
-
+ 
   <!-- ============ TEST INTRO ============ -->
   <section class="screen" id="s-test-intro">
     <div class="top">
@@ -406,7 +406,7 @@
     </p>
     <button class="go" id="test-go">I'm Ready — Start Test ⏱️</button>
   </section>
-
+ 
   <!-- ============ QUIZ ============ -->
   <section class="screen" id="s-quiz">
     <div class="qbar">
@@ -414,7 +414,7 @@
       <div class="pgtrack"><div class="pgfill" id="q-fill"></div></div>
       <button class="quitx" id="q-quit">✕</button>
     </div>
-
+ 
     <div class="ringwrap" id="ringwrap" style="display:none;">
       <svg width="96" height="96">
         <circle cx="48" cy="48" r="40" fill="none" stroke="#f5e9c8" stroke-width="11"/>
@@ -423,7 +423,7 @@
       </svg>
       <div class="rtxt" id="ring-num">6</div>
     </div>
-
+ 
     <div class="qcard" id="qcard">
       <div class="equation" id="equation"></div>
       <div class="ansbox empty" id="ansbox">?</div>
@@ -440,9 +440,9 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="coach" id="coach"></div>
-
+ 
     <div class="pad" id="pad">
       <button class="key" data-k="1">1</button>
       <button class="key" data-k="2">2</button>
@@ -459,7 +459,7 @@
     </div>
     <button class="actbtn check" id="actbtn">Check it 🐢</button>
   </section>
-
+ 
   <!-- ============ RESULTS ============ -->
   <section class="screen" id="s-results">
     <div class="scoreface">
@@ -479,7 +479,7 @@
       <button class="ragain" id="r-again">↻ Go Again</button>
     </div>
   </section>
-
+ 
   <!-- ============ PROGRESS ============ -->
   <section class="screen" id="s-progress">
     <div class="top">
@@ -497,16 +497,16 @@
     <div id="p-weak"></div>
     <button class="clearbtn" id="p-clear">Reset all my progress</button>
   </section>
-
+ 
 </div>
-
+ 
 <script>
 "use strict";
 /* ============================================================
    STEADY THE TORTOISE — times tables trainer
    Targets careless "rush" mistakes via a re-read step + timing.
    ============================================================ */
-
+ 
 /* ---------- tortoise SVG ---------- */
 function tortoiseSVG(){
   return `<svg class="tort" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg">
@@ -538,7 +538,7 @@ function tortoiseSVG(){
 document.getElementById('tort-home').innerHTML = tortoiseSVG();
 document.getElementById('tort-weak').innerHTML = tortoiseSVG();
 document.getElementById('tort-test').innerHTML = tortoiseSVG();
-
+ 
 /* ---------- data / persistence ---------- */
 const STORE_KEY = 'steady_tortoise_v1';
 let DATA = { history:[], facts:{}, bestScore:0, streak:0 };
@@ -565,7 +565,7 @@ async function saveData(){
   try{ window.localStorage.setItem(STORE_KEY, JSON.stringify(DATA)); }
   catch(e){ /* ignore — app still works for this session */ }
 }
-
+ 
 /* ---------- tips for the classic tricky facts ---------- */
 const TIPS = {
   '6x7':'6×7 = 42. Think 6×7 → "forty-two".',
@@ -598,10 +598,10 @@ const COACH_LINES = [
   'Read it twice 🐢','No rushing — take your time','Picture the answer first',
   'Slow is smooth, smooth is smart','Whisper it before you tap','The tortoise is in no hurry'
 ];
-
+ 
 function factKey(a,b){ const lo=Math.min(a,b),hi=Math.max(a,b); return lo+'x'+hi; }
 function getTip(a,b){ return TIPS[factKey(a,b)] || ''; }
-
+ 
 /* ---------- question generation ---------- */
 function weightedTable(){
   const w={2:1,3:2,4:2,5:1,6:3,7:3,8:3,9:3,10:1,11:2,12:3};
@@ -657,7 +657,7 @@ function genWeak(count){
   for(let i=0;i<count;i++){ const p=pairs[i%pairs.length]; qs.push(makeQ(p[0],p[1])); }
   return shuffle(qs);
 }
-
+ 
 /* ---------- quiz state ---------- */
 const Q = {
   mode:'practice',     // 'practice' | 'test'
@@ -674,21 +674,21 @@ const Q = {
 const RUSH_MS = { practice:4000, test:3000 };
 const PER_Q_MS = 6000;
 const RING_C = 2*Math.PI*40; // 251.3
-
+ 
 /* ---------- screen routing ---------- */
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('s-'+id).classList.add('active');
   document.getElementById('frame').scrollTop=0;
 }
-
+ 
 /* ---------- HOME stats ---------- */
 function refreshHomeStats(){
   document.getElementById('h-best').textContent = DATA.bestScore? DATA.bestScore+'/25' : '–';
   document.getElementById('h-streak').textContent = DATA.streak||0;
   document.getElementById('h-tests').textContent = DATA.history.length;
 }
-
+ 
 /* ---------- table chips ---------- */
 const chipsEl=document.getElementById('chips');
 let selected=new Set([6,7,8,9,12]);
@@ -716,7 +716,7 @@ document.querySelectorAll('[data-pick]').forEach(btn=>{
     document.getElementById('practice-go').disabled = selected.size===0;
   };
 });
-
+ 
 /* ---------- WEAK screen ---------- */
 function buildWeakScreen(){
   const ranked=Object.keys(DATA.facts)
@@ -741,7 +741,7 @@ function buildWeakScreen(){
     });
   }
 }
-
+ 
 /* ---------- start a quiz ---------- */
 function startQuiz(mode,list){
   Q.mode=mode; Q.list=list; Q.idx=0; Q.answers=[]; Q.input='';
@@ -751,7 +751,7 @@ function startQuiz(mode,list){
   document.getElementById('actbtn').textContent = mode==='test'?'Lock it in ✓':'Check it 🐢';
   renderQuestion();
 }
-
+ 
 function renderQuestion(){
   clearTimers();
   Q.input=''; Q.locked=false; Q.timerDone=false;
@@ -767,25 +767,25 @@ function renderQuestion(){
   const actb=document.getElementById('actbtn');
   actb.disabled=true;
   document.getElementById('pad').style.pointerEvents='auto';
-
+ 
   const coach=document.getElementById('coach');
   if(Q.mode==='practice'){
     coach.textContent=COACH_LINES[Q.idx % COACH_LINES.length];
   }else{
     coach.textContent='Read it… think it… then tap.';
   }
-
+ 
   Q.qStart=performance.now();
   if(Q.mode==='test') startRing();
 }
-
+ 
 function updateAns(){
   const box=document.getElementById('ansbox');
   if(Q.input===''){ box.textContent='?'; box.classList.add('empty'); }
   else { box.textContent=Q.input; box.classList.remove('empty'); }
   document.getElementById('actbtn').disabled = (Q.input==='' || Q.locked);
 }
-
+ 
 /* ---------- timer ring (test mode) ---------- */
 function startRing(){
   const ring=document.getElementById('ring');
@@ -812,7 +812,7 @@ function clearTimers(){
   if(Q.gapTO) clearTimeout(Q.gapTO);
   Q.timerRAF=null; Q.gapTO=null;
 }
-
+ 
 /* ---------- keypad ---------- */
 document.getElementById('pad').addEventListener('click',e=>{
   const b=e.target.closest('.key'); if(!b||Q.locked) return;
@@ -829,14 +829,14 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='Backspace'){ Q.input=Q.input.slice(0,-1); updateAns(); }
   else if(e.key==='Enter'){ document.getElementById('actbtn').click(); }
 });
-
+ 
 /* ---------- action button ---------- */
 document.getElementById('actbtn').onclick=()=>{
   if(Q.input===''||Q.locked) return;
   if(Q.mode==='practice'){ openCheckSheet(); }
   else { lockAnswer(false); }
 };
-
+ 
 /* ---------- check-it sheet (practice) ---------- */
 function openCheckSheet(){
   const q=Q.list[Q.idx];
@@ -851,7 +851,7 @@ document.getElementById('sheet-yes').onclick=()=>{
   document.getElementById('ovl').style.display='none';
   lockAnswer(false);
 };
-
+ 
 /* ---------- lock + grade ---------- */
 function lockAnswer(timedOut){
   if(Q.locked) return;
@@ -859,26 +859,26 @@ function lockAnswer(timedOut){
   clearTimers();
   document.getElementById('actbtn').disabled=true;
   document.getElementById('pad').style.pointerEvents='none';
-
+ 
   const q=Q.list[Q.idx];
   const timeMs=performance.now()-Q.qStart;
   const given = Q.input===''? null : parseInt(Q.input,10);
   const correct = given===q.product;
   const rushed = !correct && given!==null && timeMs < RUSH_MS[Q.mode];
-
+ 
   Q.answers.push({a:q.a,b:q.b,product:q.product,given:given,correct:correct,
                   timeMs:timeMs,rushed:rushed,timedOut:!!timedOut});
-
+ 
   // log fact stats
   const fk=factKey(q.a,q.b);
   if(!DATA.facts[fk]) DATA.facts[fk]={seen:0,wrong:0};
   DATA.facts[fk].seen++;
   if(!correct) DATA.facts[fk].wrong++;
-
+ 
   if(Q.mode==='practice'){ showFlash(correct,rushed,q,given); }
   else { advance(); }
 }
-
+ 
 function showFlash(correct,rushed,q,given){
   const f=document.getElementById('flash');
   f.style.display='flex';
@@ -900,7 +900,7 @@ function showFlash(correct,rushed,q,given){
   }
   Q.gapTO=setTimeout(advance, correct?1000:2400);
 }
-
+ 
 /* ---------- advance / finish ---------- */
 function advance(){
   Q.idx++;
@@ -922,7 +922,7 @@ function showGap(){
     else { numEl.textContent=n; numEl.style.animation='none'; void numEl.offsetWidth; numEl.style.animation='pop .35s'; }
   },650);
 }
-
+ 
 /* ---------- finish + results ---------- */
 function finishQuiz(){
   document.getElementById('q-fill').style.width='100%';
@@ -931,7 +931,7 @@ function finishQuiz(){
   const rush=Q.answers.filter(a=>a.rushed).length;
   const tricky=Q.answers.filter(a=>!a.correct && !a.rushed).length;
   const score=ok;
-
+ 
   // persist (mock test counts toward streak/best)
   const rec={ mode:Q.mode, score:score, total:total, rush:rush, tricky:tricky, when:Date.now() };
   DATA.history.push(rec);
@@ -942,22 +942,22 @@ function finishQuiz(){
   }
   saveData();
   refreshHomeStats();
-
+ 
   renderResults(score,total,ok,rush,tricky);
   show('results');
   if(Q.mode==='test' && score===25) burstConfetti();
 }
-
+ 
 function renderResults(score,total,ok,rush,tricky){
   document.getElementById('r-score').innerHTML=score+'<small>/'+total+'</small>';
   document.getElementById('r-ok').textContent=ok;
   document.getElementById('r-rush').textContent=rush;
   document.getElementById('r-tricky').textContent=tricky;
-
+ 
   const vEl=document.getElementById('r-verdict');
   const mEl=document.getElementById('r-vmsg');
   const mistakes=total-ok;
-
+ 
   if(mistakes===0){
     vEl.textContent='🏆 PERFECT — 25 out of 25 feeling!';
     vEl.style.color='#2f5f2c';
@@ -975,7 +975,7 @@ function renderResults(score,total,ok,rush,tricky){
     vEl.style.color='#e09a14';
     mEl.innerHTML='You took your time, which is great. These '+tricky+' fact'+(tricky>1?'s':'')+' just need drilling — hit <b>Beat My Tricky Tables</b>.';
   }
-
+ 
   const rev=document.getElementById('r-rev');
   const hd=document.getElementById('r-reviewhd');
   rev.innerHTML='';
@@ -1005,7 +1005,7 @@ document.getElementById('r-again').onclick=()=>{
   if(Q.mode==='test') startQuiz('test',genTest());
   else startQuiz(Q.mode, Q.list.map(q=>makeQ(q.a,q.b)));
 };
-
+ 
 /* ---------- confetti ---------- */
 function burstConfetti(){
   const cols=['#f4b528','#3f7d3a','#e8654a','#5fa356','#9aad4e'];
@@ -1020,7 +1020,7 @@ function burstConfetti(){
     setTimeout(()=>c.remove(),5200);
   }
 }
-
+ 
 /* ---------- PROGRESS ---------- */
 function renderProgress(){
   document.getElementById('p-best').textContent = DATA.bestScore? DATA.bestScore+'/25':'–';
@@ -1028,7 +1028,7 @@ function renderProgress(){
   const last5=DATA.history.slice(-5);
   const rushSum=last5.reduce((s,h)=>s+(h.rush||0),0);
   document.getElementById('p-rush').textContent=rushSum;
-
+ 
   // chart
   const wrap=document.getElementById('p-chartwrap');
   const tests=DATA.history.slice(-10);
@@ -1044,7 +1044,7 @@ function renderProgress(){
     });
     wrap.innerHTML='<div class="chart">'+bars+'</div>';
   }
-
+ 
   // weak facts
   const pw=document.getElementById('p-weak');
   const ranked=Object.keys(DATA.facts)
@@ -1066,12 +1066,12 @@ document.getElementById('p-clear').onclick=()=>{
     saveData(); refreshHomeStats(); renderProgress();
   }
 };
-
+ 
 /* ---------- quit quiz ---------- */
 document.getElementById('q-quit').onclick=()=>{
   if(confirm('Stop this quiz and go home?')){ clearTimers(); show('home'); }
 };
-
+ 
 /* ---------- navigation wiring ---------- */
 document.querySelectorAll('[data-go]').forEach(el=>{
   el.addEventListener('click',()=>{
@@ -1094,7 +1094,7 @@ document.getElementById('weak-go').onclick=()=>{
 document.getElementById('test-go').onclick=()=>{
   startQuiz('test', genTest());
 };
-
+ 
 /* ---------- boot ---------- */
 (async function(){
   await loadData();
